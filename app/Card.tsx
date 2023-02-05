@@ -1,25 +1,36 @@
 "use client"
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Box, CardBody, Card, Text, Stack, Heading, Button, Input } from '@chakra-ui/react';
+import PostCard from './PostData';
 function Cards() {
 
-  function hanldSubmit(e: any) {
+  const [todos, setTodos]: string[] | any[] = useState([]);
+  const [message, setMessage] = useState("");
+
+
+  function hanldSubmit(e: { preventDefault: () => void; }) {
     e.preventDefault();
-    console.log('Check')
+    setTodos([...todos, message]);
+    console.log('Todos ==>', todos);
+  }
+
+  function updateData(newData: any[]) {
+    setTodos(newData)
   }
 
   return (
-    <Box width="100%" height='100vh' bg="lightblue">
+    <Box maxW="100%" height='100vh' bg="lightblue">
       <br />
-      <form onClick={hanldSubmit}>
-        <Card width="35%" m="0 auto">
-          <Heading as='h4' size='md' fontFamily='mono' textAlign='center' mt="10px">TodoApp</Heading>
-          <CardBody>
-            <Input type='text' placeholder='Message' marginBottom="10px" />
-            <Button type='submit' float='right'>Add</Button>
-          </CardBody>
-        </Card>
-      </form>
+      <Card maxW={{ base: "65%", md: "35%", lg: "35%" }} m="0 auto">
+        <CardBody>
+          <form action='#' onClick={hanldSubmit}>
+            <Heading as='h4' size='md' fontFamily='mono' textAlign='center' mt="10px">TodoApp</Heading>
+            <Input type='text' placeholder='Message' marginBottom="10px" value={message} onChange={(e) => setMessage(e.target.value)} />
+            <Button type='submit' as={'button'} float='right'>Add</Button>
+          </form>
+        </CardBody>
+      </Card>
+      <PostCard todos={todos} updateData={updateData} />
     </Box>
   )
 }
